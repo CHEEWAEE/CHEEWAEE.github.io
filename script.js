@@ -1,48 +1,18 @@
-// Theme toggle functionality
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = themeToggle.querySelector('.theme-icon');
-const htmlElement = document.documentElement;
+const html = document.documentElement;
 
-const currentTheme = localStorage.getItem('theme') || 'light';
-htmlElement.setAttribute('data-theme', currentTheme);
-updateThemeIcon(currentTheme);
+const sunSVG = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+const moonSVG = `<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    themeIcon.innerHTML = theme === 'dark' ? sunSVG : moonSVG;
+}
+
+setTheme(localStorage.getItem('theme') || 'light');
 
 themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    htmlElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
-
-function updateThemeIcon(theme) {
-    themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-}
-
-// Typewriter effect for bio
-const bio = document.querySelector('.about-section p');
-const bioText = bio.textContent.replace(/\s+/g, ' ').trim();
-bio.textContent = '';
-
-const cursor = document.createElement('span');
-cursor.textContent = '|';
-cursor.style.cssText = 'animation: blink 1s step-end infinite; opacity: 1; color: var(--accent-1);';
-bio.after(cursor);
-
-const blinkStyle = document.createElement('style');
-blinkStyle.textContent = '@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }';
-document.head.appendChild(blinkStyle);
-
-let i = 0;
-function typeWriter() {
-    if (i < bioText.length) {
-        bio.textContent += bioText[i];
-        i++;
-        setTimeout(typeWriter, 28);
-    } else {
-        setTimeout(() => { cursor.style.display = 'none'; }, 2000);
-    }
-}
-
-// Start after the container fade-in finishes (~600ms) + small buffer
-setTimeout(typeWriter, 700);
