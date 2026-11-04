@@ -76,31 +76,6 @@ header p {
     line-height: 1.6;
 }
 
-header .status {
-    margin-top: 14px;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--muted);
-}
-
-.status .dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--fg);
-    margin-right: 8px;
-    vertical-align: 1px;
-}
-
-.status .dot.fresh {
-    animation: pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    50% { opacity: 0.2; }
-}
-
 /* sections */
 
 section + section {
@@ -126,13 +101,11 @@ h2::before {
 .projects {
     list-style: none;
     border-top: 1px solid var(--line);
-    counter-reset: proj;
 }
 
 .projects li {
     border-bottom: 1px solid var(--line);
     padding: 14px 0;
-    counter-increment: proj;
     position: relative;
 }
 
@@ -140,15 +113,6 @@ h2::before {
     display: flex;
     align-items: baseline;
     gap: 10px;
-}
-
-.projects .row::before {
-    content: counter(proj, decimal-leading-zero);
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    color: var(--faint);
-    width: 22px;
-    flex-shrink: 0;
 }
 
 .projects .name {
@@ -197,7 +161,6 @@ h2::before {
     justify-content: space-between;
     gap: 4px 12px;
     margin-top: 4px;
-    padding-left: 32px;
     font-size: 0.8rem;
     color: var(--muted);
 }

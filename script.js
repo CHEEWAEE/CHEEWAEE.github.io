@@ -68,10 +68,6 @@ copyBtn.addEventListener('click', async () => {
 
 /* ---------- live repo activity ---------- */
 
-const USER = 'CHEEWAEE';
-const CACHE_KEY = 'repos:v1';
-const CACHE_MS = 10 * 60 * 1000;
-
 function ago(iso) {
     const s = (Date.now() - new Date(iso).getTime()) / 1000;
     const steps = [[60, 's'], [60, 'm'], [24, 'h'], [30, 'd'], [12, 'mo'], [Infinity, 'y']];
@@ -82,40 +78,26 @@ function ago(iso) {
     }
 }
 
-async function loadRepos() {
+async function pushedAt(repo) {
+    const key = `pushed:${repo}`;
     try {
-        const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
-        if (cached && Date.now() - cached.t < CACHE_MS) return cached.repos;
+        const cached = JSON.parse(sessionStorage.getItem(key) || 'null');
+        if (cached && Date.now() - cached.t < 10 * 60 * 1000) return cached.v;
     } catch (e) {}
 
-    const res = await fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed`, {
+    const res = await fetch(`https://api.github.com/repos/CHEEWAEE/${repo}`, {
         headers: { Accept: 'application/vnd.github+json' }
     });
     if (!res.ok) throw new Error(res.status);
-
-    const repos = (await res.json()).map(r => ({ name: r.name, pushed: r.pushed_at }));
-    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), repos })); } catch (e) {}
-    return repos;
+    const v = (await res.json()).pushed_at;
+    try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v })); } catch (e) {}
+    return v;
 }
 
-loadRepos().then(repos => {
-    const byName = new Map(repos.map(r => [r.name.toLowerCase(), r]));
-
-    document.querySelectorAll('.projects li[data-repo]').forEach(li => {
-        const repo = byName.get(li.dataset.repo.toLowerCase());
-        if (!repo) return;
+document.querySelectorAll('.projects li[data-repo]').forEach(li => {
+    pushedAt(li.dataset.repo).then(iso => {
         const el = li.querySelector('.pushed');
-        el.textContent = ago(repo.pushed);
-        el.title = new Date(repo.pushed).toLocaleString();
-    });
-
-    const latest = repos
-        .filter(r => r.name.toLowerCase() !== `${USER}.github.io`.toLowerCase())
-        .sort((a, b) => new Date(b.pushed) - new Date(a.pushed))[0];
-    if (!latest) return;
-
-    const status = document.getElementById('status');
-    const fresh = Date.now() - new Date(latest.pushed).getTime() < 3 * 24 * 3600 * 1000;
-    status.innerHTML = `<span class="dot${fresh ? ' fresh' : ''}"></span>last push ${ago(latest.pushed)} · ${latest.name.toLowerCase()}`;
-    status.hidden = false;
-}).catch(() => { /* offline or rate-limited: rows just show no timestamp */ });
+        el.textContent = ago(iso);
+        el.title = new Date(iso).toLocaleString();
+    }).catch(() => {});
+});
