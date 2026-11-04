@@ -7,15 +7,22 @@
 :root {
     --bg: #f8f8f8;
     --fg: #111;
-    --muted: #999;
+    --muted: #8a8a8a;
+    --faint: #b5b5b5;
     --line: #e4e4e4;
+    --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 }
 
 [data-theme="dark"] {
     --bg: #0f0f0f;
     --fg: #efefef;
-    --muted: #555;
+    --muted: #7a7a7a;
+    --faint: #4a4a4a;
     --line: #1e1e1e;
+}
+
+html {
+    background: var(--bg);
 }
 
 body {
@@ -24,24 +31,36 @@ body {
     color: var(--fg);
     min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    transition: background 0.25s, color 0.25s;
-    padding: 24px;
+    padding: 18vh 24px 80px;
+    -webkit-font-smoothing: antialiased;
 }
 
 main {
-    width: min(460px, 100%);
+    width: min(500px, 100%);
     animation: fadeIn 0.35s ease;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    main { animation: none; }
+}
+
+a { color: inherit; }
+
+:focus-visible {
+    outline: 1px solid var(--fg);
+    outline-offset: 3px;
+}
+
+/* header */
+
 header {
-    margin-bottom: 36px;
+    margin-bottom: 48px;
 }
 
 h1 {
@@ -55,32 +74,193 @@ header p {
     color: var(--muted);
     font-size: 0.9rem;
     line-height: 1.6;
-    transition: color 0.25s;
 }
+
+header .status {
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+}
+
+.status .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fg);
+    margin-right: 8px;
+    vertical-align: 1px;
+}
+
+.status .dot.fresh {
+    animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    50% { opacity: 0.2; }
+}
+
+/* sections */
+
+section + section {
+    margin-top: 48px;
+}
+
+h2 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: lowercase;
+    margin-bottom: 10px;
+}
+
+h2::before {
+    content: '~/';
+    color: var(--faint);
+}
+
+/* projects */
+
+.projects {
+    list-style: none;
+    border-top: 1px solid var(--line);
+    counter-reset: proj;
+}
+
+.projects li {
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0;
+    counter-increment: proj;
+    position: relative;
+}
+
+.projects .row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.projects .row::before {
+    content: counter(proj, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--faint);
+    width: 22px;
+    flex-shrink: 0;
+}
+
+.projects .name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+}
+
+/* whole row clickable */
+.projects .name::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.projects li:hover .name {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+
+.projects .live {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    border: 1px solid var(--fg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.projects .pushed {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.projects .meta,
+.projects .sub {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 12px;
+    margin-top: 4px;
+    padding-left: 32px;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.projects .stack {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+}
+
+.projects .sub {
+    justify-content: flex-start;
+    gap: 14px;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+}
+
+/* sub links sit above the row-wide link */
+.projects .sub a {
+    position: relative;
+    z-index: 1;
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--faint);
+}
+
+.projects .sub a:hover {
+    border-color: var(--fg);
+}
+
+.projects .sub a::after {
+    content: ' ↗';
+    color: var(--muted);
+}
+
+/* contact */
 
 .links {
     list-style: none;
     border-top: 1px solid var(--line);
-    transition: border-color 0.25s;
 }
 
 .links li {
     border-bottom: 1px solid var(--line);
-    transition: border-color 0.25s;
 }
 
-.links li a,
-.links li .link-row {
+.link-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    width: 100%;
     padding: 13px 0;
     text-decoration: none;
     color: var(--fg);
+    background: none;
+    border: 0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
     transition: opacity 0.15s;
 }
 
-.links li a:hover {
+.link-row:hover {
     opacity: 0.45;
 }
 
@@ -89,18 +269,28 @@ header p {
     color: var(--muted);
     width: 90px;
     flex-shrink: 0;
-    transition: color 0.25s;
 }
 
 .handle {
     font-size: 0.85rem;
+    overflow-wrap: anywhere;
 }
+
+.copied {
+    margin-left: auto;
+    padding-left: 12px;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+}
+
+/* theme toggle */
 
 .theme-btn {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: none;
+    background: var(--bg);
     border: 1px solid var(--line);
     border-radius: 50%;
     width: 34px;
@@ -111,6 +301,7 @@ header p {
     justify-content: center;
     color: var(--muted);
     transition: border-color 0.2s, color 0.2s;
+    z-index: 2;
 }
 
 .theme-btn:hover {
@@ -127,4 +318,16 @@ header p {
     stroke-linecap: round;
     stroke-linejoin: round;
     display: block;
+}
+
+/* circular reveal on theme switch (browsers with View Transitions) */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+@media (max-width: 420px) {
+    body { padding-top: 12vh; }
+    .projects .meta { flex-direction: column; }
 }

@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>william</title>
+    <meta name="description" content="William Pich Chhour, software engineering student.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='18' font-weight='700' fill='%23efefef' text-anchor='middle'%3Ew%3C/text%3E%3C/svg%3E">
+    <script>
+        (function () {
+            var t;
+            try { t = localStorage.getItem('theme'); } catch (e) {}
+            if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,45 +27,93 @@
         <header>
             <h1>william</h1>
             <p>software engineering student<br>and video game addict.</p>
+            <p class="status" id="status" hidden></p>
         </header>
 
-        <ul class="links">
-            <li>
-                <a href="https://www.instagram.com/sasdosy/" target="_blank" rel="noopener noreferrer">
-                    <span class="platform">instagram</span>
-                    <span class="handle">sasdosy</span>
-                </a>
-            </li>
-            <li>
-                <div class="link-row">
-                    <span class="platform">discord</span>
-                    <span class="handle">sasdos</span>
-                </div>
-            </li>
-            <li>
-                <a href="https://open.spotify.com/user/y9os8354cftm5b6n5qzqq3r4u?si=b3bae8406a0947d0" target="_blank" rel="noopener noreferrer">
-                    <span class="platform">spotify</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.reddit.com/user/Sasdos/" target="_blank" rel="noopener noreferrer">
-                    <span class="platform">reddit</span>
-                    <span class="handle">sasdos</span>
-                </a>
-            </li>
-            <li>
-                <div class="link-row">
-                    <span class="platform">email</span>
-                    <span class="handle">williampichchhour@gmail.com</span>
-                </div>
-            </li>
-            <li>
-                <a href="https://github.com/CHEEWAEE" target="_blank" rel="noopener noreferrer">
-                    <span class="platform">github</span>
-                    <span class="handle">cheewaee</span>
-                </a>
-            </li>
-        </ul>
+        <section aria-labelledby="projects-h">
+            <h2 id="projects-h">projects</h2>
+            <ul class="projects">
+                <li class="featured" data-repo="cram">
+                    <div class="row">
+                        <a class="name" href="https://www.appcram.com" target="_blank" rel="noopener noreferrer">cram</a>
+                        <span class="live">live</span>
+                        <span class="pushed"></span>
+                    </div>
+                    <div class="meta">
+                        <span>flashcard app</span>
+                        <span class="stack">React · Express · Postgres · Supabase</span>
+                    </div>
+                    <div class="sub">
+                        <a href="https://www.appcram.com" target="_blank" rel="noopener noreferrer">appcram.com</a>
+                        <a href="https://github.com/CHEEWAEE/cram" target="_blank" rel="noopener noreferrer">source</a>
+                    </div>
+                </li>
+                <li data-repo="pagerank-system">
+                    <div class="row">
+                        <a class="name" href="https://github.com/CHEEWAEE/pagerank-system" target="_blank" rel="noopener noreferrer">pagerank-system</a>
+                        <span class="pushed"></span>
+                    </div>
+                    <div class="meta">
+                        <span>search engine</span>
+                        <span class="stack">C</span>
+                    </div>
+                </li>
+                <li data-repo="TCP-like-Protocol-over-UDP">
+                    <div class="row">
+                        <a class="name" href="https://github.com/CHEEWAEE/TCP-like-Protocol-over-UDP" target="_blank" rel="noopener noreferrer">tcp-over-udp</a>
+                        <span class="pushed"></span>
+                    </div>
+                    <div class="meta">
+                        <span>reliable transport</span>
+                        <span class="stack">Python</span>
+                    </div>
+                </li>
+                <li data-repo="cursed-system">
+                    <div class="row">
+                        <a class="name" href="https://github.com/CHEEWAEE/cursed-system" target="_blank" rel="noopener noreferrer">cursed-system</a>
+                        <span class="pushed"></span>
+                    </div>
+                    <div class="meta">
+                        <span>file encryption &amp; search</span>
+                        <span class="stack">C</span>
+                    </div>
+                </li>
+                <li data-repo="take-system">
+                    <div class="row">
+                        <a class="name" href="https://github.com/CHEEWAEE/take-system" target="_blank" rel="noopener noreferrer">take-system</a>
+                        <span class="pushed"></span>
+                    </div>
+                    <div class="meta">
+                        <span>submission &amp; marking</span>
+                        <span class="stack">Bash</span>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="contact-h">
+            <h2 id="contact-h">contact</h2>
+            <ul class="links">
+                <li>
+                    <button class="link-row" id="copyEmail" type="button" data-email="williampichchhour@gmail.com">
+                        <span class="platform">email</span>
+                        <span class="handle">williampichchhour@gmail.com</span>
+                        <span class="copied" aria-live="polite"></span>
+                    </button>
+                </li>
+                <li>
+                    <a class="link-row" href="https://github.com/CHEEWAEE" target="_blank" rel="noopener noreferrer">
+                        <span class="platform">github</span>
+                        <span class="handle">cheewaee</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="link-row" href="https://open.spotify.com/user/y9os8354cftm5b6n5qzqq3r4u?si=b3bae8406a0947d0" target="_blank" rel="noopener noreferrer">
+                        <span class="platform">spotify</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
     </main>
 
     <script src="script.js"></script>
